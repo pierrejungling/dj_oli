@@ -3,7 +3,7 @@ const contact = {
   lastName: "Dheur",
   title: "DJ et Conseiller en communication & Responsable Evenementiel",
   company: "VLAN Verviers",
-  phone: "",
+  phone: "+320496 41 36 18",
   email: "olivier.dheur@rossel.be",
   address: "Andrimont, Belgique",
   website: "",
@@ -11,6 +11,8 @@ const contact = {
   linkedin: "",
   instagram: "https://www.instagram.com/olivierdheur?igsh=N2JpazNrd2V3bTVu"
 };
+const CONTACT_PHOTO_PATH = "./assets/img/olivier-dheur.png";
+let cachedVcfPhotoLine = null;
 
 function isFilled(value) {
   return typeof value === "string" && value.trim() !== "";
@@ -22,6 +24,62 @@ function escapeVcf(value) {
     .replace(/\n/g, "\\n")
     .replace(/;/g, "\\;")
     .replace(/,/g, "\\,");
+}
+
+function foldVcfLine(line, maxLength = 75) {
+  if (line.length <= maxLength) {
+    return line;
+  }
+
+  const chunks = [];
+  for (let i = 0; i < line.length; i += maxLength) {
+    chunks.push(line.slice(i, i + maxLength));
+  }
+
+  return chunks.join("\r\n ");
+}
+
+function toBase64(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  const chunkSize = 0x8000;
+
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+  }
+
+  return btoa(binary);
+}
+
+async function getVcfPhotoLine() {
+  if (cachedVcfPhotoLine) {
+    return cachedVcfPhotoLine;
+  }
+
+  try {
+    const response = await fetch(CONTACT_PHOTO_PATH);
+    if (!response.ok) {
+      return "";
+    }
+
+    const blob = await response.blob();
+    const buffer = await blob.arrayBuffer();
+    const base64 = toBase64(buffer);
+
+    let type = "JPEG";
+    if (blob.type === "image/png") {
+      type = "PNG";
+    } else if (blob.type === "image/webp") {
+      type = "WEBP";
+    } else if (blob.type === "image/gif") {
+      type = "GIF";
+    }
+
+    cachedVcfPhotoLine = foldVcfLine(`PHOTO;ENCODING=b;TYPE=${type}:${base64}`);
+    return cachedVcfPhotoLine;
+  } catch (error) {
+    return "";
+  }
 }
 
 function sanitizeFilename(value) {
@@ -133,7 +191,7 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function buildVcfContent() {
+async function buildVcfContent() {
   const firstName = (contact.firstName || "").trim();
   const lastName = (contact.lastName || "").trim();
   const fullName = `${firstName} ${lastName}`.trim() || "Contact";
@@ -145,6 +203,11 @@ function buildVcfContent() {
     `N:${escapeVcf(lastName)};${escapeVcf(firstName)};;;`
   ];
 
+  const photoLine = await getVcfPhotoLine();
+
+  if (photoLine) {
+    lines.push(photoLine);
+  }
   if (isFilled(contact.phone)) {
     lines.push(`TEL;TYPE=CELL,VOICE:${escapeVcf(contact.phone.trim())}`);
   }
@@ -164,10 +227,12 @@ function buildVcfContent() {
     lines.push(`URL:${escapeVcf(contact.linkedin.trim())}`);
   }
   if (isFilled(contact.facebook)) {
-    lines.push(`URL:${escapeVcf(contact.facebook.trim())}`);
+    lines.push(`item1.URL:${escapeVcf(contact.facebook.trim())}`);
+    lines.push("item1.X-ABLabel:Facebook");
   }
   if (isFilled(contact.instagram)) {
-    lines.push(`URL:${escapeVcf(contact.instagram.trim())}`);
+    lines.push(`item2.URL:${escapeVcf(contact.instagram.trim())}`);
+    lines.push("item2.X-ABLabel:Instagram");
   }
 
   lines.push("END:VCARD");
@@ -181,8 +246,8 @@ function getVcfFilename() {
   return `${base || "contact"}.vcf`;
 }
 
-function downloadVcf() {
-  const vcfContent = buildVcfContent();
+async function downloadVcf() {
+  const vcfContent = await buildVcfContent();
   const blob = new Blob([vcfContent], { type: "text/vcard;charset=utf-8" });
   const url = URL.createObjectURL(blob);
 
@@ -262,9 +327,9 @@ function bindActions() {
   const downloadBtn = document.getElementById("download-vcf-btn");
   const copyBtn = document.getElementById("copy-info-btn");
 
-  downloadBtn.addEventListener("click", () => {
-    downloadVcf();
-    feedbackEl.textContent = "Fichier VCF téléchargé.";
+  downloadBtn.addEventListener("click", async () => {
+    await downloadVcf();
+    feedbackEl.textContent = "Fichier VCF téléchargé (avec photo).";
   });
 
   copyBtn.addEventListener("click", () => {
