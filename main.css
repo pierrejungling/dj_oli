@@ -1,0 +1,226 @@
+:root {
+  --bg: #ffffff;
+  --text: #111111;
+  --muted: #5b5b5b;
+  --border: #d9d9d9;
+  --surface: #ffffff;
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  --radius: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1rem 0.5rem;
+}
+
+.brand-logo {
+  width: min(86vw, 260px);
+  height: auto;
+  display: block;
+}
+
+.header-kicker {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.page-main {
+  padding: 1rem 1rem 2rem;
+  display: grid;
+  place-items: center;
+}
+
+.contact-card {
+  width: 100%;
+  max-width: 520px;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.avatar-wrap {
+  margin: 0 0 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.avatar {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  background: #f7f7f7;
+}
+
+.contact-name {
+  margin: 0;
+  font-size: clamp(1.75rem, 6vw, 2.25rem);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.contact-subtitle {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.contact-details {
+  margin: 1.25rem 0 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.detail-row {
+  margin: 0;
+  display: grid;
+  gap: 0.12rem;
+}
+
+.detail-term {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.detail-value {
+  margin: 0;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: var(--text);
+  text-underline-offset: 0.14em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid #000000;
+  outline-offset: 2px;
+}
+
+.contact-links-section {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.section-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.contact-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.link-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.38rem 0.7rem;
+  text-decoration: none;
+  background: #fafafa;
+}
+
+.link-chip:hover {
+  background: #f1f1f1;
+}
+
+.link-chip svg {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
+.actions {
+  margin-top: 1.35rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  padding: 0.72rem 0.95rem;
+  background: #ffffff;
+  color: #111111;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #f5f5f5;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: #111111;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #000000;
+}
+
+.feedback {
+  min-height: 1.25rem;
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .page-header {
+    padding-top: 1.75rem;
+  }
+
+  .contact-card {
+    padding: 1.6rem;
+  }
+}

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | DJ OLI</title>
+    <meta name="description" content="Page de contact DJ OLI" />
+    <link rel="stylesheet" href="./normalize.css" />
+    <link rel="stylesheet" href="./main.css" />
+    <script src="./index.js" defer></script>
+  </head>
+  <body>
+    <header class="page-header">
+      <img
+        class="brand-logo"
+        src="./assets/img/logo-dj-oli.png"
+        alt="Logo DJ OLI"
+        width="260"
+        height="93"
+      />
+      <p class="header-kicker">Contact</p>
+    </header>
+
+    <main class="page-main">
+      <article class="contact-card" aria-labelledby="contact-full-name">
+        <figure class="avatar-wrap">
+          <img
+            class="avatar"
+            src="./assets/img/olivier-dheur.png"
+            alt="Photo de profil de Olivier Dheur"
+            width="128"
+            height="128"
+          />
+        </figure>
+        <h1 id="contact-full-name" class="contact-name"></h1>
+        <p id="contact-subtitle" class="contact-subtitle" hidden></p>
+
+        <dl class="contact-details" id="contact-details"></dl>
+
+        <section class="contact-links-section" aria-label="Liens externes" id="links-wrapper" hidden>
+          <h2 class="section-title">Liens</h2>
+          <ul class="contact-links" id="contact-links"></ul>
+        </section>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="download-vcf-btn">
+            Télécharger le contact (VCF)
+          </button>
+          <button type="button" class="btn btn-secondary" id="copy-info-btn">
+            Copier les infos
+          </button>
+        </div>
+
+        <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+      </article>
+    </main>
+  </body>
+</html>
