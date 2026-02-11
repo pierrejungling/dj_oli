@@ -3,7 +3,7 @@ const contact = {
   lastName: "Dheur",
   title: "DJ et Conseiller en communication & Responsable Evenementiel",
   company: "VLAN Verviers",
-  phone: "+320496 41 36 18",
+  phone: "+32 496 41 36 18",
   email: "olivier.dheur@rossel.be",
   address: "Andrimont, Belgique",
   website: "",
